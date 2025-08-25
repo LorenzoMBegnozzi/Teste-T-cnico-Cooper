@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS clients (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  email VARCHAR(120) NOT NULL,
+  cpf VARCHAR(14) NOT NULL,
+  phone VARCHAR(20) DEFAULT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY uk_clients_email (email),
+  UNIQUE KEY uk_clients_cpf (cpf)
+);
