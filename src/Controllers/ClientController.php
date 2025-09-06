@@ -37,6 +37,9 @@ class ClientController {
         if ($phone !== '') {
             $v->regex(field: 'phone', value: $phone, pattern: '/^[0-9()\-\s+]{8,20}$/', message: 'Telefone inválido.');
         }
+        $v->minLenCPF(field: 'cpf', value: $cpf, min: 11, max: 11, message: 'CPF deve ter exatamente 11 caracteres.');
+        //$v->minLenCPF(field: 'cpf', value: $cpf, length: 11, message: 'CPF deve ter exatamente 11 caracteres.');
+
 
         //emal ja usado
         if ($this->model->existsEmail(email: $email)) {
@@ -58,7 +61,7 @@ class ClientController {
 
         if (!$v->ok()) {
             $errors = $v->errors();
-            $old = compact('name','email','cpf','phone');
+            $old = compact('name','email','cpf','phone'); //mesmo depois do erro, continua preenchido
             include __DIR__ . '/../Views/create.php';
             return;
         }
@@ -110,6 +113,9 @@ class ClientController {
         if ($phone !== '') {
             $v->regex('phone', value: $phone, pattern: '/^[0-9()\-\s+]{8,20}$/', message: 'Telefone inválido.');
         }
+        $v->minLenCPF(field: 'cpf', value: $cpf, min: 11, max: 11, message: 'CPF deve ter exatamente 11 caracteres.');
+
+        //$v->minLenCPF(field: 'cpf', value: $cpf, length: 11, message: 'CPF deve ter exatamente 11 caracteres.');
 
         // duplicidade de email
         if ($this->model->existsEmail(email: $email, ignoreId: $id)) {
@@ -118,8 +124,16 @@ class ClientController {
             $old = compact('id','name','email','cpf','phone');
             include __DIR__ . '/../Views/edit.php';
             return;
-        }
+        }   
 
+        if($this->model->existsCpf(cpf: $cpf, ignoreId: $id)) {
+            $errors = $v->errors();
+            $errors['cpf'][] = 'CPF já cadastrado.';
+            $old = compact('id','name','email','cpf','phone');
+            include __DIR__ . '/../Views/edit.php';
+            return;
+        }
+        
         if (!$v->ok()) {
             $errors = $v->errors();
             $old = compact('id','name','email','cpf','phone');

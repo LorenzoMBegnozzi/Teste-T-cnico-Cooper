@@ -1,6 +1,7 @@
 <?php include __DIR__ . '/header.php'; ?>
 <h2>Clientes</h2>
-
+<!-- Sem htmlspecialchars() → o navegador pode executar código malicioso enviado pelo usuário.
+Com htmlspecialchars() → o navegador só mostra o texto, não executa nada. -->
 <?php if (empty($clients)): ?>
   <p>Nenhum cliente cadastrado.</p>
 <?php else: ?>

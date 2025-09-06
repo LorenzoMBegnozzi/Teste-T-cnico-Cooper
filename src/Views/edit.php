@@ -1,5 +1,6 @@
 <?php include __DIR__ . '/header.php'; ?>
 <h2>Editar Cliente</h2>
+  <link rel="stylesheet" href="/css/style.css">
 
 <?php if (!empty($errors)): ?>
   <div>

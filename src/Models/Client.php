@@ -1,5 +1,14 @@
 <?php
 require_once __DIR__ . '/../Core/Database.php';
+/*query()
+Executa uma consulta SQL diretamente, sem placeholders.
+Ideal para consultas fixas, que não usam valores externos do usuário.
+
+prepare()
+Prepara uma consulta SQL com placeholders (? ou :nome) e executa depois.
+Muito útil quando há valores dinâmicos do usuário.
+*/
+
 
 class Client {
     private PDO $db; 
@@ -7,13 +16,12 @@ class Client {
 
     public function all(): array {
         $stmt = $this->db->query(query: "SELECT * FROM clients ORDER BY id DESC");
-        return $stmt->fetchAll(mode: PDO::FETCH_ASSOC); //retorna em formato de array
+        return $stmt->fetchAll(mode: PDO::FETCH_ASSOC); //retorna em all em formato de array associativo
     }
 
     public function find(int $id): mixed {
         $stmt = $this->db->prepare(query: "SELECT * FROM clients WHERE id = ?");
-        //prepare -> pq o "?" vai ser preenchido depois pelo execute, quando tiver variaveis
-        $stmt->execute(params: [$id]); //executa o query substituindo o ? poir $id
+        $stmt->execute(params: [$id]); //executa o query substituindo o ? poir $id 
         return $stmt->fetch(mode: PDO::FETCH_ASSOC);
     }
 
